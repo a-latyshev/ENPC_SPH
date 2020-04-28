@@ -1,0 +1,32 @@
+Poiseuille
+
+Case Parameters
+e = 0.500000 
+U0 = 1.000000 
+Re = 1.000000 
+g = 4.000000 
+
+Simulation Parameters
+dr = 0.062500 
+smthfc = 2.000000 
+nBound = 4 
+Refresh neiblist every 1 iteration(s) 
+
+Fluid Parameters
+	 rhoF = 1000 
+	 mu = 500 
+	 c_0 = 10 
+	 gamma = 7 
+
+Viscous Model
+Morris viscous model
+
+Periodic case
+
+Format of data file
+POS (x,y) : 1 2
+VEL (x,y) : 3 4
+RHO : 5
+SPID : 7
+FORCES (Fx,Fy,dRho/dt) : 8 9 10
+INFO : 6

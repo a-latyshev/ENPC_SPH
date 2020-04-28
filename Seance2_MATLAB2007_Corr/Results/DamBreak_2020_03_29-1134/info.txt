@@ -1,0 +1,38 @@
+Dam Break
+
+Case Parameters
+lx = 0.500000 
+ly = 1.000000 
+Lx = 2.000000 
+
+Simulation Parameters
+dr = 0.050000 
+smthfc = 1.500000 
+nBound = 4 
+Refresh neiblist every 1 iteration(s) 
+
+Fluid Parameters
+	 rhoF = 1000 
+	 mu = 1.000000e-06 
+	 c_0 = 40 
+	 gamma = 7 
+
+Similuation Spec.
+	 rhoMin = 500 
+	 rhoMax = 1500 
+
+Viscous Model
+Artificial viscosity model
+	 alpha = 3.000000e-01 
+	 eps = 2.500000e-09 
+
+ Density Diffusion Model
+NONE
+
+Format of data file
+POS (x,y) : 1 2
+VEL (x,y) : 3 4
+RHO : 5
+SPID : 7
+FORCES (Fx,Fy,dRho/dt) : 8 9 10
+INFO : 6
