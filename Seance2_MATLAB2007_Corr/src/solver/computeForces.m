@@ -86,7 +86,7 @@ if VISCTYPE == ARTVISC
             F_Visc = ArtViscContrib(m,mu_art,rho_i,rho_j,dwdr,rVelVisc,rPos,eps);
             
             %CONTINUITY CONTRIBUTION
-            dRhodt = DivergenceContrib(m,dwdr,rVelCont,rPos);
+            dRhodt = DivergenceContribMolteniColagrossi(m,dwdr,rVelCont,rPos,0.1,rho_i,rho_j);
             %
             forceTab(i,:) = [sum(F_Pres) 0]+[sum(F_Visc) 0]+ [g 0]+ [0 0 sum(dRhodt)];
         end
