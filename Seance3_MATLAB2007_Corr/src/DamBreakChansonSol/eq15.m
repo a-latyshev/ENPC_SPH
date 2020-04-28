@@ -1,0 +1,9 @@
+function res = eq15(U,g,D,t,rho,mu)
+ReD = rho*sqrt(g*D^3)/mu;
+G=2.5*10^-3/(ReD*U/sqrt(g*D));
+res = 1-0.5*U/sqrt(g*D);
+res = res^(7/2);
+res = res/G^0.25;
+res = res/(U/sqrt(g*D))^2;
+res = res*32/13 - sqrt(g/D)*t;
+res=res^2;
