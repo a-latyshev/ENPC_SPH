@@ -18,16 +18,16 @@ global FLUID BOUND;
 global B rhoF gamma;
 
 infoTab = part(:,INFO);
-fluid = part(infoTab ==FLUID,:);
-bound = part(infoTab ==BOUND,:);
+fluid = part(infoTab == FLUID,:);
+bound = part(infoTab == BOUND,:);
 propTab=fluid(:,RHO);
 
 
 
-n=size(posTab,1);
+% n=size(posTab,1);
 %figure()
 gcf.PaperUnits='inches';
-gcf.PaperPosition = [0 0 10 5];
+gcf.PaperPosition = [0 0 2 0.2];%10 5
 clf
 hold on
 pTab = [fluid(:,POS(2)) Pressure(propTab,B,rhoF,gamma)]';
