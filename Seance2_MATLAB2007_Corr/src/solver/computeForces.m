@@ -23,7 +23,8 @@ global g;
 global  rhoF m;
 global FLUID BOUND;
 global ARTVISC VISCTYPE;
-global DENSDIFFTYPE;
+global COLAGROSSIDIFF DENSDIFFTYPE;
+global delta
 global alpha eps;
 global mu;
 global dt;
@@ -86,7 +87,20 @@ if VISCTYPE == ARTVISC
             F_Visc = ArtViscContrib(m,mu_art,rho_i,rho_j,dwdr,rVelVisc,rPos,eps);
             
             %CONTINUITY CONTRIBUTION
-            dRhodt = DivergenceContrib(m,dwdr,rVelCont,rPos);
+            switch d
+                case{2}
+                    sigma=sqrt(5/18)*h;
+                    nu_rho=delta*sigma*c0;
+                case{3}
+                    sigma=sqrt(4/15)*h;
+                    nu_rho=delta*sigma*c0;
+            end
+            if DENSDIFFTYPE == COLAGROSSIDIFF
+                dRhodt = DivergenceContribMolteniColagrossi(m,dwdr,rVelCont,rPos,nu_rho,rho_i,rho_j);
+            else
+                dRhodt = DivergenceContrib(m,dwdr,rVelCont,rPos);
+            end
+            
             %
             forceTab(i,:) = [sum(F_Pres) 0]+[sum(F_Visc) 0]+ [g 0]+ [0 0 sum(dRhodt)];
         end
@@ -140,7 +154,20 @@ else
             F_Pres = PressureContrib(m,rho_i,rho_j,P_i,P_j,dwdr,er);
             
             %CONTINUITY CONTRIBUTION
-            dRhodt = DivergenceContrib(m,dwdr,rVelCont,rPos);
+            switch d
+                case{2}
+                    sigma=sqrt(5/18)*h;
+                    nu_rho=delta*sigma*c0;
+                case{3}
+                    sigma=sqrt(4/15)*h;
+                    nu_rho=delta*sigma*c0;
+            end
+            if DENSDIFFTYPE == COLAGROSSIDIFF
+                dRhodt = DivergenceContribMolteniColagrossi(m,dwdr,rVelCont,rPos,nu_rho,rho_i,rho_j);
+            else
+                dRhodt = DivergenceContrib(m,dwdr,rVelCont,rPos);
+            end
+            
             %
             forceTab(i,:) = [sum(F_Pres) 0]+ [g 0]+ [0 0 sum(dRhodt)];
         end
