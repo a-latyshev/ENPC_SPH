@@ -20,7 +20,7 @@ global INFO POS VEL RHO SPID FORCES;
 global c0 B gamma;
 global aW d h;
 global g;
-global  rhoF m;
+global rhoF m;
 global FLUID BOUND;
 global ARTVISC VISCTYPE;
 global COLAGROSSIDIFF DENSDIFFTYPE;
@@ -28,6 +28,7 @@ global delta
 global alpha eps;
 global mu;
 global dt;
+
 nPart = size(partTab,1);
 forceTab = zeros(size(partTab(:,FORCES))); %Init forceTab to zero
 %VISCOUS CONTRIBUTION
@@ -85,7 +86,7 @@ if VISCTYPE == ARTVISC
             mu_art = rho_i*h*alpha*(rho_j.*((c0_i+c0_j)./(rho_i+rho_j)));
             mu_art(info_j==BOUND) = 0; % NO VISC CONTRIBUTIONS OF WALLS
             F_Visc = ArtViscContrib(m,mu_art,rho_i,rho_j,dwdr,rVelVisc,rPos,eps);
-            
+        
             %CONTINUITY CONTRIBUTION
             switch d
                 case{2}

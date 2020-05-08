@@ -278,3 +278,6 @@ TSWLatexianTemp*
 **/**/*.pdf
 
 *.png
+
+**/**/info.txt
+.vscode
