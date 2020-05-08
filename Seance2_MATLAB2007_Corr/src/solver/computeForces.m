@@ -20,7 +20,7 @@ global INFO POS VEL RHO SPID FORCES;
 global c0 B gamma;
 global aW d h;
 global g;
-global  rhoF m;
+global rhoF m;
 global FLUID BOUND;
 global ARTVISC VISCTYPE;
 global COLAGROSSIDIFF DENSDIFFTYPE;
@@ -92,14 +92,14 @@ if VISCTYPE == ARTVISC
             mu_art(info_j==BOUND) = 0; % NO VISC CONTRIBUTIONS OF WALLS
             F_Visc = ArtViscContrib(m,mu_art,rho_i,rho_j,dwdr,rVelVisc,rPos,eps);
             
-            % Detection of the surface libre
-            particle_type = findParticleType(m,dwdr,rho_j,rPos);
-            if particle_type(2) == LONELY_PARTICLE
-                lonely_particles = [lonely_particles i];
-            elseif particle_type(2) == FREE_BOUNDARY_PARTICLE 
-                free_boundary_particles = [free_boundary_particles i];
-            end
-            lambda_list = [lambda_list particle_type(1)];
+            % % Detection of the surface libre
+            % particle_type = findParticleType(m,dwdr,rho_j,rPos);
+            % if particle_type(2) == LONELY_PARTICLE
+            %     lonely_particles = [lonely_particles i];
+            % elseif particle_type(2) == FREE_BOUNDARY_PARTICLE 
+            %     free_boundary_particles = [free_boundary_particles i];
+            % end
+            % lambda_list = [lambda_list particle_type(1)];
 
 
             %CONTINUITY CONTRIBUTION

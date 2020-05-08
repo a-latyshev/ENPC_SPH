@@ -246,7 +246,8 @@ while t<1.51 %10
     text = sprintf('Compute forces in :  %f s',t1e-t1s);
     disp(text);
     disp('SURF_ELEM!!!!');
-    disp(free_boundary_particles)
+    separated_particles = separateParticles(part,space);
+    disp(separated_particles(2));
     
     %INTEGRATION STEP STEP
     part = integrationStep(part,dt);
