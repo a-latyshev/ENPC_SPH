@@ -28,6 +28,12 @@ global delta
 global alpha eps;
 global mu;
 global dt;
+
+global LONELY_PARTICLE FREE_BOUNDARY_PARTICLE;
+global lambda_list; %list of minimal eigen numbers of renormalisation matrix 
+global free_boundary_particles; %list of indexes 
+global lonely_particles; %list of indexes 
+
 nPart = size(partTab,1);
 forceTab = zeros(size(partTab(:,FORCES))); %Init forceTab to zero
 %VISCOUS CONTRIBUTION
@@ -86,6 +92,16 @@ if VISCTYPE == ARTVISC
             mu_art(info_j==BOUND) = 0; % NO VISC CONTRIBUTIONS OF WALLS
             F_Visc = ArtViscContrib(m,mu_art,rho_i,rho_j,dwdr,rVelVisc,rPos,eps);
             
+            % Detection of the surface libre
+            particle_type = findParticleType(m,dwdr,rho_j,rPos);
+            if particle_type(2) == LONELY_PARTICLE
+                lonely_particles = [lonely_particles i];
+            elseif particle_type(2) == FREE_BOUNDARY_PARTICLE 
+                free_boundary_particles = [free_boundary_particles i];
+            end
+            lambda_list = [lambda_list particle_type(1)];
+
+
             %CONTINUITY CONTRIBUTION
             switch d
                 case{2}

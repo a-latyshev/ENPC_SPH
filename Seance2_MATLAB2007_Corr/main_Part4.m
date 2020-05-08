@@ -28,6 +28,12 @@ global alpha eps;
 global c0 B gamma mu dt rhoMin rhoMax shepardMin;
 global g nBound;
 global vecPer;
+
+global LONELY_PARTICLE FREE_BOUNDARY_PARTICLE SURROUNDED_PARTICLE;
+global lambda_list; %list of minimal eigen numbers of renormalisation matrix 
+global free_boundary_particles; %list of indexes 
+global lonely_particles; %list of indexes 
+
 %Fluid information
 g=[0 -9.81];
 rhoF=1000;
@@ -52,6 +58,13 @@ smthfc=1.5;
 aW = 7/(4*pi);
 d = 2;
 
+%
+LONELY_PARTICLE = 1;
+FREE_BOUNDARY_PARTICLE = 2;
+SURROUNDED_PARTICLE = 3;
+lambda_list = [];
+free_boundary_particles = [];
+lonely_particles = [];
 
 % Visc models
 %VISCOUS MODEL
@@ -119,8 +132,6 @@ xOrigin= -nBound*dr;
 yOrigin=-nBound*dr;
 
 part=[];
-
-findSurfaceParticles();
 
 %% 4-a) Construct the domain
 % COMPLETE HERE
@@ -234,6 +245,8 @@ while t<1.51 %10
     t1e = cputime;
     text = sprintf('Compute forces in :  %f s',t1e-t1s);
     disp(text);
+    disp('SURF_ELEM!!!!');
+    disp(free_boundary_particles)
     
     %INTEGRATION STEP STEP
     part = integrationStep(part,dt);
