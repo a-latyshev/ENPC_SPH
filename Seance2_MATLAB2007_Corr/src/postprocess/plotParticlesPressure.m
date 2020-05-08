@@ -10,7 +10,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plotParticlesPressure(fluid,nameBar,propMin,propMax)
 % display the particle pressure field
-function plotParticlesPressure(part,nameBar,propMin,propMax)
+function plotParticlesPressure(part,nameBar,propMin,propMax, indexes)
 global dr lspace;
 global INFO;
 global POS RHO;
@@ -60,6 +60,20 @@ patch(xtab,ytab,color,'Edgecolor','none');
 xtab = [bound(:,POS(1))-dr/2 bound(:,POS(1))+dr/2 bound(:,POS(1))+dr/2 bound(:,POS(1))-dr/2]';
 ytab = [bound(:,POS(2))-dr/2 bound(:,POS(2))-dr/2 bound(:,POS(2))+dr/2 bound(:,POS(2))+dr/2]';
 patch(xtab,ytab,'white');
+
+%% PLOT BOUND PARTICLES
+xtab = [];
+ytab = [];
+N = size(indexes);
+disp('N = ');
+disp(N);
+for i = 1:N
+    disp('AAAAA');
+    disp(indexes(i));
+    xtab = [xtab part(indexes(i),POS(1))-dr/2 part(indexes(i),POS(1))+dr/2 part(indexes(i),POS(1))+dr/2 part(indexes(i),POS(1))-dr/2]';
+    ytab = [ytab ; part(indexes(i),POS(2))-dr/2 part(indexes(i),POS(2))-dr/2 part(indexes(i),POS(2))+dr/2 part(indexes(i),POS(2))+dr/2]';    
+end
+patch(xtab,ytab,'red');
 
 %% ADD AXES
 xlabel('$x$ (m)','Interpreter','latex','fontsize',18);

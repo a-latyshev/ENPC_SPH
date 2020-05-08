@@ -28,13 +28,13 @@ nPart = size(partTab,1);
         rho_j = partTab(listNeib,RHO);
 
         % Detection of the surface libre
-        particle_type = findParticleType(m,dwdr,rho_j,rPos);
-        if particle_type(2) == LONELY_PARTICLE
-            lonely_particles1 = [lonely_particles1 i];
-        elseif particle_type(2) == FREE_BOUNDARY_PARTICLE 
-            free_boundary_particles1 = [free_boundary_particles1 i];
-        end
-        lambda_list1 = [lambda_list1 particle_type(1)];
+        % particle_type = findParticleType(m,dwdr,rho_j,rPos);
+        % if particle_type(2) == LONELY_PARTICLE
+        %     lonely_particles1 = [lonely_particles1 i];
+        % elseif particle_type(2) == FREE_BOUNDARY_PARTICLE 
+        %     free_boundary_particles1 = [free_boundary_particles1 i];
+        % end
+        % lambda_list1 = [lambda_list1 particle_type(1)];
     end
     separated_particles = [lonely_particles1 free_boundary_particles1 lambda_list1]
 end

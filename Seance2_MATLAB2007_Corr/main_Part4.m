@@ -145,7 +145,7 @@ part =  createBox(part,-nBound*dr,0,nBound*dr,Ly,dr,BOUND);
 part =  createBox(part,Lx,0,nBound*dr,Ly,dr,BOUND);
 % END
 space = createSpace(dr,smthfc,lspace,xOrigin,yOrigin,xSize,ySize);
-plotParticlesPressure(part,'Pressure',0,rhoF*norm(g)*ly)
+% plotParticlesPressure(part,'Pressure',0,rhoF*norm(g)*ly)
 
 %% 4-b) Initialize the pressure/density
 % Start by completing the function src/initialisation/pLaplaceNoDim.m
@@ -162,7 +162,7 @@ end
 part = initPressFuncDB(lx,ly,10,part);
 [part,space] = sortPart(part,space,lspace,dr,xOrigin,yOrigin,xSize,ySize);
 plotSpace(space,0)
-plotParticlesPressure(part,'Pressure',0,rhoF*norm(g)*ly*pLaplaceNoDim(lx,ly,10,0,0)/2)
+% plotParticlesPressure(part,'Pressure',0,rhoF*norm(g)*ly*pLaplaceNoDim(lx,ly,10,0,0)/2)
 xlim([xOrigin-xSize*.05,xOrigin+xSize*1.05])
 ylim([yOrigin-ySize*.05,yOrigin+ySize*1.05])
 
@@ -173,7 +173,7 @@ observe_point=observe_point(observe_point_0);
 
 %% 4-c) Boundary pressure interpolation 
 part = interpolateBoundary(part,space);
-plotParticlesPressure(part,'Pressure',0,rhoF*norm(g)*ly)
+% plotParticlesPressure(part,'Pressure',0,rhoF*norm(g)*ly)
 xlim([xOrigin-xSize*.05,xOrigin+xSize*1.05])
 ylim([yOrigin-ySize*.05,yOrigin+ySize*1.05])
 
@@ -246,8 +246,14 @@ while t<1.51 %10
     text = sprintf('Compute forces in :  %f s',t1e-t1s);
     disp(text);
     disp('SURF_ELEM!!!!');
-    separated_particles = separateParticles(part,space);
-    disp(separated_particles(2));
+    % separated_particles = separateParticles(part,space);
+
+    % disp(size(separated_particles(1)));
+    % disp(size(separated_particles(2)));
+    % disp(size(separated_particles(3)));
+
+    disp(size(free_boundary_particles));
+    % disp(separated_particles(2));
     
     %INTEGRATION STEP STEP
     part = integrationStep(part,dt);
@@ -297,7 +303,7 @@ while t<1.51 %10
 
         fig1 = figure(1);
         %Plot the pressure field
-        plotParticlesPressure(part,'Pressure',0,rhoF*norm(g)*ly*pLaplaceNoDim(lx,ly,10,0,0)/.4);%
+        plotParticlesPressure(part,'Pressure',0,rhoF*norm(g)*ly*pLaplaceNoDim(lx,ly,10,0,0)/.4, free_boundary_particles);%
         title(['$t*(\frac{g}{H})^{1/2} $=  ',sprintf('%2.2f',t*sqrt(norm(g)/ly))],'Interpreter','latex' )
         xlim([xOrigin-dr/2,xOrigin+xSize+dr/2])
         ylim([yOrigin-dr/2,yOrigin+ySize+dr/2])
