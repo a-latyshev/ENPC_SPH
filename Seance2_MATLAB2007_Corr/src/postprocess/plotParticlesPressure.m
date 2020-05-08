@@ -10,12 +10,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plotParticlesPressure(fluid,nameBar,propMin,propMax)
 % display the particle pressure field
-function plotParticlesPressure(part,nameBar,propMin,propMax, indexes)
+function plotParticlesPressure(part,nameBar,propMin,propMax)
 global dr lspace;
 global INFO;
 global POS RHO;
 global FLUID BOUND;
 global B rhoF gamma;
+
+global free_boundary_particles;
 
 infoTab = part(:,INFO);
 fluid = part(infoTab ==FLUID,:);
@@ -61,19 +63,14 @@ xtab = [bound(:,POS(1))-dr/2 bound(:,POS(1))+dr/2 bound(:,POS(1))+dr/2 bound(:,P
 ytab = [bound(:,POS(2))-dr/2 bound(:,POS(2))-dr/2 bound(:,POS(2))+dr/2 bound(:,POS(2))+dr/2]';
 patch(xtab,ytab,'white');
 
-%% PLOT BOUND PARTICLES
-xtab = [];
-ytab = [];
-N = size(indexes);
-disp('N = ');
-disp(N);
-for i = 1:N
-    disp('AAAAA');
-    disp(indexes(i));
-    xtab = [xtab part(indexes(i),POS(1))-dr/2 part(indexes(i),POS(1))+dr/2 part(indexes(i),POS(1))+dr/2 part(indexes(i),POS(1))-dr/2]';
-    ytab = [ytab ; part(indexes(i),POS(2))-dr/2 part(indexes(i),POS(2))-dr/2 part(indexes(i),POS(2))+dr/2 part(indexes(i),POS(2))+dr/2]';    
+% PLOT FREE BOUNDARY
+N = size(free_boundary_particles)
+for i = 1:N(2)
+    k = free_boundary_particles(1,i);
+    xtab = [part(k,POS(1))-dr/2 part(k,POS(1))+dr/2 part(k,POS(1))+dr/2 part(k,POS(1))-dr/2]';
+    ytab = [part(k,POS(2))-dr/2 part(k,POS(2))-dr/2 part(k,POS(2))+dr/2 part(k,POS(2))+dr/2]';
+    patch(xtab,ytab,'red');
 end
-patch(xtab,ytab,'red');
 
 %% ADD AXES
 xlabel('$x$ (m)','Interpreter','latex','fontsize',18);
