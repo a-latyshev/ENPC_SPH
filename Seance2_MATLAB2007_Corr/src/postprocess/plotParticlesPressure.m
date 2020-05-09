@@ -58,19 +58,20 @@ color(:,:,3) = colorRGB(:,3);
 % display
 patch(xtab,ytab,color,'Edgecolor','none');
 
-%% PLOT BOUND PARTICLES
-xtab = [bound(:,POS(1))-dr/2 bound(:,POS(1))+dr/2 bound(:,POS(1))+dr/2 bound(:,POS(1))-dr/2]';
-ytab = [bound(:,POS(2))-dr/2 bound(:,POS(2))-dr/2 bound(:,POS(2))+dr/2 bound(:,POS(2))+dr/2]';
-patch(xtab,ytab,'white');
-
 % PLOT FREE BOUNDARY
-N = size(free_boundary_particles)
+N = size(free_boundary_particles);
 for i = 1:N(2)
     k = free_boundary_particles(1,i);
     xtab = [part(k,POS(1))-dr/2 part(k,POS(1))+dr/2 part(k,POS(1))+dr/2 part(k,POS(1))-dr/2]';
     ytab = [part(k,POS(2))-dr/2 part(k,POS(2))-dr/2 part(k,POS(2))+dr/2 part(k,POS(2))+dr/2]';
     patch(xtab,ytab,'red');
 end
+
+%% PLOT BOUND PARTICLES
+xtab = [bound(:,POS(1))-dr/2 bound(:,POS(1))+dr/2 bound(:,POS(1))+dr/2 bound(:,POS(1))-dr/2]';
+ytab = [bound(:,POS(2))-dr/2 bound(:,POS(2))-dr/2 bound(:,POS(2))+dr/2 bound(:,POS(2))+dr/2]';
+patch(xtab,ytab,'white');
+
 
 %% ADD AXES
 xlabel('$x$ (m)','Interpreter','latex','fontsize',18);
