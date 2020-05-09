@@ -277,7 +277,9 @@ TSWLatexianTemp*
 
 **/**/*.pdf
 
-*.png
+/Seance3_MATLAB2007_Corr/**/*.png 
+/Seance2_MATLAB2007_Corr/**/*.png 
+/Seance1_MATLAB2007_Corr/**/*.png 
 
 **/**/info.txt
 .vscode
