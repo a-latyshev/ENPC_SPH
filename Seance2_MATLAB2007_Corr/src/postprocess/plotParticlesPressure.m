@@ -64,7 +64,7 @@ ytab = [bound(:,POS(2))-dr/2 bound(:,POS(2))-dr/2 bound(:,POS(2))+dr/2 bound(:,P
 patch(xtab,ytab,'white');
 
 % PLOT FREE BOUNDARY
-N = size(free_boundary_particles)
+N = size(free_boundary_particles);
 for i = 1:N(2)
     k = free_boundary_particles(1,i);
     xtab = [part(k,POS(1))-dr/2 part(k,POS(1))+dr/2 part(k,POS(1))+dr/2 part(k,POS(1))-dr/2]';
