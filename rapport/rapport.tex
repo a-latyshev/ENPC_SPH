@@ -30,6 +30,7 @@
 \newcommand\uul[1]{\underline{\underline{#1}}}
 \newcommand\uex{\ul{e}_x}
 \newcommand\uey{\ul{e}_y}
+\newcommand\uGrad{\ul{\nabla}}
 %%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
@@ -76,12 +77,19 @@
 \section{Implémentation d'un schéma de diffusion de densité}
 Modèle de Molteni et Colagrossi: 
 \begin{align*}
-	\dot{\rho} &= -\rho_{a}D_{a}\{\text{v}_{b}\}+\nu_{\rho}L_{a}\{\rho_{b}\}\\
-	\nu_{\rho} &= \delta\sigma c_{0} 
+	\dot{\rho}_a &= -\rho_{a}D_{a}\{\ul{v}_{b}\}+\nu_{\rho}L_{a}\{\rho_{b}\}\\
+	\nu_{\rho} &= \delta\sigma c_{0}, 
 \end{align*}
-$\sigma=\sqrt{5/18}h$ si on prends noyau "Wendland $C^2$ ($d=2$)". $c_0$ est un constant déjà calculé. Ce que on doit ajouter dans le code est justement la terme laplacienne du $\rho$.
+où $\sigma=\sqrt{5/18}h$ si on prends noyau "Wendland $C^2$ ($d=2$)". $c_0$ est un constant déjà calculé. Ce que on doit ajouter dans le code est justement la terme laplacienne du $\rho$.
 
-On a pris TD2 comme une base de notre projet. Pour d'activer et de désactiver la diffusion de densité, On définit un variable "DENSDIFFTYPE" en égalant 1 ou 0 du ligne 83 à 86(nommé par " Density diffusion (PROJECT!!!)"). Et le paramètre $\delta$ est laissé libre à utilisateur du ligne 88(nommé par "diff Parameters").\par
+Car $\ul{\nabla}w_{ab} \propto \ul{r}_{ab}$ et $V_b = \frac{m}{\rho_b}$ on obtient
+\begin{align*}
+    L_{a}\{ \rho_{b} \} & = 2 \sum_b V_b(\rho_a - \rho_b)\frac{ \ul{r}_{ab} \cdot \uGrad w_{ab} }{ |\ul{r}_{ab}|^2 } = 2 \sum_b \frac{m}{\rho_b}(\rho_a - \rho_b)\frac{ |\uGrad w_{ab}| }{ |\ul{r}_{ab}| } \\
+    D_{a}\{\ul{v}_{b}\} & = -\frac{1}{\rho_a} \sum_b m(\ul{v}_a - \ul{v}_b) \cdot \uGrad w_{ab} = -\frac{m}{\rho_a} \sum_b (\ul{v}_a - \ul{v}_b) \cdot \ul{r}_{ab} \frac{ | \uGrad w_{ab} | }{ |\ul{r}_{ab}| } \\
+	-\rho_{a}D_{a}\{\ul{v}_{b}\}+\nu_{\rho}L_{a}\{\rho_{b}\} &= m\sum_b \left( (\ul{v}_a - \ul{v}_b) \cdot \ul{r}_{ab}  + 2 \nu_\rho \frac{\rho_a - \rho_b}{\rho_b} \right)  \frac{ |\uGrad w_{ab}| }{ |\ul{r}_{ab}| }
+\end{align*}
+
+On a pris TD2 comme une base de notre projet. Pour d'activer et de désactiver la diffusion de densité, On définit un variable "DENSDIFFTYPE" en égalant 1 ou 0 du ligne 83 à 86 (nommé par " Density diffusion (PROJECT!!!)"). Et le paramètre $\delta$ est laissé libre à utilisateur du ligne 88 (nommé par "diff Parameters").\par
   
 \subsection{Impact sur le champs de pression}
 \begin{figure}[h]
