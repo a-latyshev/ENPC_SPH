@@ -23,15 +23,19 @@
 \usepackage{newcent}            %pour la police
 \usepackage{hyperref}           % page numbers and '\ref's become clickable
 %%%%%%%%%%%%%%%%%%%%%%%
-
+% \usepackage[usenames,dvipsnames]{color}
+% \usepackage[numbered,framed]{mcode}
 %%%%%%%%%%%%%%%%%%%%%%%
 \newcommand\ul[1]{\underline{#1}}
 \newcommand\uul[1]{\underline{\underline{#1}}}
 \newcommand\uex{\ul{e}_x}
 \newcommand\uey{\ul{e}_y}
+\newcommand\uGrad{\ul{\nabla}}
 %%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+\lstset{language=matlab}   
+
 \begin{titlepage}
 	\thispagestyle{empty}
 	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
@@ -73,12 +77,19 @@
 \section{Implémentation d'un schéma de diffusion de densité}
 Modèle de Molteni et Colagrossi: 
 \begin{align*}
-	\dot{\rho} &= -\rho_{a}D_{a}\{\text{v}_{b}\}+\nu_{\rho}L_{a}\{\rho_{b}\}\\
-	\nu_{\rho} &= \delta\sigma c_{0} 
+	\dot{\rho}_a &= -\rho_{a}D_{a}\{\ul{v}_{b}\}+\nu_{\rho}L_{a}\{\rho_{b}\}\\
+	\nu_{\rho} &= \delta\sigma c_{0}, 
 \end{align*}
-$\sigma=\sqrt{5/18}h$ si on prends noyau "Wendland $C^2$ ($d=2$)". $c_0$ est un constant déjà calculé. Ce que on doit ajouter dans le code est justement la terme laplacienne du $\rho$.
+où $\sigma=\sqrt{5/18}h$ si on prends noyau "Wendland $C^2$ ($d=2$)". $c_0$ est un constant déjà calculé. Ce que on doit ajouter dans le code est justement la terme laplacienne du $\rho$.
 
-Pour d'activer et de désactiver la diffusion de densité, On définit un variable "DENSDIFFTYPE" en égalant 1 ou 0 du ligne 83 à 86(nommé par " Density diffusion (PROJECT!!!)"). Et le paramètre $\delta$ est laissé libre à utilisateur du ligne 88(nommé par "diff Parameters").\par
+Car $\ul{\nabla}w_{ab} \propto \ul{r}_{ab}$ et $V_b = \frac{m}{\rho_b}$ on obtient
+\begin{align*}
+    L_{a}\{ \rho_{b} \} & = 2 \sum_b V_b(\rho_a - \rho_b)\frac{ \ul{r}_{ab} \cdot \uGrad w_{ab} }{ |\ul{r}_{ab}|^2 } = 2 \sum_b \frac{m}{\rho_b}(\rho_a - \rho_b)\frac{ |\uGrad w_{ab}| }{ |\ul{r}_{ab}| } \\
+    D_{a}\{\ul{v}_{b}\} & = -\frac{1}{\rho_a} \sum_b m(\ul{v}_a - \ul{v}_b) \cdot \uGrad w_{ab} = -\frac{m}{\rho_a} \sum_b (\ul{v}_a - \ul{v}_b) \cdot \ul{r}_{ab} \frac{ | \uGrad w_{ab} | }{ |\ul{r}_{ab}| } \\
+	-\rho_{a}D_{a}\{\ul{v}_{b}\}+\nu_{\rho}L_{a}\{\rho_{b}\} &= m\sum_b \left( (\ul{v}_a - \ul{v}_b) \cdot \ul{r}_{ab}  + 2 \nu_\rho \frac{\rho_a - \rho_b}{\rho_b} \right)  \frac{ |\uGrad w_{ab}| }{ |\ul{r}_{ab}| }
+\end{align*}
+
+On a pris TD2 comme une base de notre projet. Pour d'activer et de désactiver la diffusion de densité, On définit un variable "DENSDIFFTYPE" en égalant 1 ou 0 du ligne 83 à 86 (nommé par " Density diffusion (PROJECT!!!)"). Et le paramètre $\delta$ est laissé libre à utilisateur du ligne 88 (nommé par "diff Parameters").\par
   
 \subsection{Impact sur le champs de pression}
 \begin{figure}[H]
@@ -94,6 +105,37 @@ Pour d'activer et de désactiver la diffusion de densité, On définit un variab
 	\caption{Champ de pression comparé à un instant avec et sans diffusion de densité.}
 \end{figure}
 On voit facilement le champs de pression varie d'une manière "glissante" par rapport à gauche où on désactive la diffusion de densité. Ce schéma nous permets de simuler un processus dans lequel l'impact de la pression à la densité n'est pas négligeable. Celui-ci évite évidemment la divergence de l'itération dans calculs.
+
+On a implémenté le schéma de diffusion de densité de Molteni et Colagrossi dans la fonction \\
+\lstinline$src\solver\DivergenceContribMolteniColagrossi.m$ :
+\begin{lstlisting}           
+function F = DivergenceContribMolteniColagrossi(m,dwdr,rVel,rPos,nu_rho,rho_i,rho_j)
+    rNorm = (rPos(:,1).*rPos(:,1)+rPos(:,2).*rPos(:,2)).^(.5);
+    veldotpos = rVel(:,1).*rPos(:,1)+rVel(:,2).*rPos(:,2);
+    F = m*veldotpos.*dwdr./rNorm + nu_rho*2*m*(rho_i-rho_j)./rho_j.*dwdr./rNorm;
+end
+\end{lstlisting} 
+
+Pour appliquer ce schéma on a changé la détermination de la densité dans la fichier \\
+\lstinline$src\solver\ComputeForces.m$ :
+\begin{lstlisting}           
+    %CONTINUITY CONTRIBUTION
+    switch d
+        case{2}
+            sigma=sqrt(5/18)*h;
+            nu_rho=delta*sigma*c0;
+        case{3}
+            sigma=sqrt(4/15)*h;
+            nu_rho=delta*sigma*c0;
+    end
+    if DENSDIFFTYPE == COLAGROSSIDIFF
+        dRhodt = 
+            DivergenceContribMolteniColagrossi(m,dwdr,rVelCont,rPos,nu_rho,rho_i,rho_j);
+    else
+        dRhodt = DivergenceContrib(m,dwdr,rVelCont,rPos);
+    end
+\end{lstlisting} 
+
 \subsection{Énergie mécanique en fonction du temps}
 \begin{figure}[H]
 	\begin{minipage}[H]{0.49\linewidth}
@@ -147,10 +189,11 @@ On compare nos résultats numériques avec les résultats expérimentaux donnés
      
 \section{Détection de surface libre}
 
-\begin{equation}
+Dans cette partie on va réaliser la méthode de détection de surface libre par Doring (2005). On a la matrice de renormalisation :
+\begin{equation*}
 	\uul{R}_i^{-1} = - \sum_{j} V_j \ul{\nabla} w_{ij} \otimes \ul{r}_{ij}
-\end{equation}
-
+\end{equation*}
+Car $\ul{\nabla}w_{ij} \propto \ul{r}_{ij}$ et $V_j = \frac{m}{\rho_j}$ on obtient
 \begin{align*}
 	& \uul{R}_i^{-1} = - \sum_{j} \frac{m}{\rho_j} \ul{\nabla} w_{ij} \otimes \ul{r}_{ij} = - m \sum_{j} 
 	\frac{| \ul{\nabla} w_{ij} |}{\rho_j |\ul{r}_{ij} |} \ul{r}_{ij} \otimes \ul{r}_{ij} = -m A \implies A = A^T \\
@@ -158,11 +201,10 @@ On compare nos résultats numériques avec les résultats expérimentaux donnés
 	& \lambda_{\min} = \min\lambda(\uul{R}_i^{-1}) = \min\{ -\frac{m}{2} (\mathrm{tr} A \pm \sqrt{\mathrm{tr}^2 - 4 \det A}) \} = -\frac{m}{2} (\mathrm{tr} A + \sqrt{\mathrm{tr}^2 - 4 \det A})
 \end{align*}
 
-Pour réaliser cette fonctionnalité on a implémenté des variables de type des particules et la fonction \lstinline$particle_type$, qui retourne une list de deux éléments : la valeur propre minimale et le type de la particule considérée.  
+Pour réaliser cette fonctionnalité on a implémenté des variables de type des particules et la fonction \lstinline$src\solver\particle_type.m$, qui retourne une liste de deux éléments : la valeur propre minimale et le type de la particule considérée.
 % \\ \lstinline$LONELY_PARTICLE FREE_BOUNDARY_PARTICLE SURROUNDED_PARTICLE$
-\lstset{language=matlab}   
 \begin{lstlisting}           
-	function particle_type = findParticleType(m,dwdr,rho_j,rPos)
+function particle_type = findParticleType(m,dwdr,rho_j,rPos)
     % R-1 = -m * A 
     global LONELY_PARTICLE FREE_BOUNDARY_PARTICLE SURROUNDED_PARTICLE;
 
@@ -183,7 +225,72 @@ Pour réaliser cette fonctionnalité on a implémenté des variables de type des
         particle_type = [lambda FREE_BOUNDARY_PARTICLE];
     else 
         particle_type = [lambda SURROUNDED_PARTICLE];
+end
+\end{lstlisting} 
+
+Pour déterminer tous les types des particules on a réalisé une fonction \lstinline$src\solver\separateParticles.m$, où il y a une boucle pour les particules \lstinline$FLUID$ de notre domaine. Cette fonction retourne trois listes : \lstinline$lambda_list$ contient toutes les valeurs propres minimales $\lambda_{\min}$, \lstinline$free_boundary_particles$ contient les indexes des particules appartenant à la surface libre et  \lstinline$lonely_particles$ contient les indexes des particules, qui appartiennent à un jet ou sont isolées.
+
+Pour appliquer la fonctionnalité réalisé dans le projet, on appel la fonction \lstinline$separateParticles$ dans le fichier principale \lstinline$main_Part4.m$ sur chaque itération du processus. 
+\begin{lstlisting}           
+    [lonely_particles free_boundary_particles lambda_list] 
+    = separateParticles(part,space);
+\end{lstlisting} 
+
+Pour s'assurer que l'algorithme détermine correctement la surface libre, on a changé un peu la fonction \lstinline$plotParticlesPressure$. Désormais, les carrées rouges indiquent la surface libre.  
+
+\begin{lstlisting}
+    % PLOT FREE BOUNDARY
+    N = size(free_boundary_particles);
+    for i = 1:N(2)
+        k = free_boundary_particles(1,i);
+        xtab = [part(k,POS(1))-dr/2 part(k,POS(1))+dr/2 
+            part(k,POS(1))+dr/2 part(k,POS(1))-dr/2]';
+        ytab = [part(k,POS(2))-dr/2 part(k,POS(2))-dr/2 
+            part(k,POS(2))+dr/2 part(k,POS(2))+dr/2]';
+        patch(xtab,ytab,'red');
     end
 \end{lstlisting} 
 
+
+\begin{figure}[H]
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000000}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000020}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000047}}
+    \end{minipage}
+    \vfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000062}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000088}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000123}}
+    \end{minipage}
+    \vfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000173}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000218}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000236}}
+    \end{minipage}
+    \caption{La démonstration de la surface libre pour les itérations différentes}
+    % \label{ris:correlationsignals}
+\end{figure}
+    
+Comme on voit l'algorithme fonctionne très bien sauf des certaines itérations. "La pénétration" des éléments de la surface libre puisse être liée avec l'inexactitude des calculs numériques et avec le petite nombre des particules. Cette méthode est suffisant pour approximer la surface libre. 
 \end{document}
