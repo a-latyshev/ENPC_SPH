@@ -23,7 +23,8 @@
 \usepackage{newcent}            %pour la police
 \usepackage{hyperref}           % page numbers and '\ref's become clickable
 %%%%%%%%%%%%%%%%%%%%%%%
-
+% \usepackage[usenames,dvipsnames]{color}
+% \usepackage[numbered,framed]{mcode}
 %%%%%%%%%%%%%%%%%%%%%%%
 \newcommand\ul[1]{\underline{#1}}
 \newcommand\uul[1]{\underline{\underline{#1}}}
@@ -32,6 +33,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+\lstset{language=matlab}   
+
 \begin{titlepage}
 	\thispagestyle{empty}
 	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
@@ -72,6 +75,8 @@
 \newpage
 \section{Implémentation d'un schéma de diffusion de densité}
 
+On a pris TD2 comme une base de notre projet. 
+
 Pour d'activer et de désactiver la diffusion de densité, On définit un variable "DENSDIFFTYPE" en égalant 1 ou 0 du ligne 83 à 86(nommé par " Density diffusion (PROJECT!!!)"). Et le paramètre $\delta$ est laissé libre à utilisateur du ligne 88(nommé par "diff Parameters").\par
   
 \subsection{Impact sur le champs de pression}
@@ -88,6 +93,37 @@ Pour d'activer et de désactiver la diffusion de densité, On définit un variab
 	\caption{Champ de pression comparé à un instant avec et sans diffusion de densité.}
 \end{figure}
 On voit facilement le champs de pression varie d'une manière "glissante" par rapport à gauche où on désactive la diffusion de densité. Ce schéma nous permets de simuler un processus dans lequel l'impact de la pression à la densité n'est pas négligeable. Celui-ci évite évidemment la divergence de l'itération dans calculs.
+
+On a implémenté le schéma de diffusion de densité de Molteni et Colagrossi dans la fonction \\
+\lstinline$src\solver\DivergenceContribMolteniColagrossi.m$ :
+\begin{lstlisting}           
+function F = DivergenceContribMolteniColagrossi(m,dwdr,rVel,rPos,nu_rho,rho_i,rho_j)
+    rNorm = (rPos(:,1).*rPos(:,1)+rPos(:,2).*rPos(:,2)).^(.5);
+    veldotpos = rVel(:,1).*rPos(:,1)+rVel(:,2).*rPos(:,2);
+    F = m*veldotpos.*dwdr./rNorm + nu_rho*2*m*(rho_i-rho_j)./rho_j.*dwdr./rNorm;
+end
+\end{lstlisting} 
+
+Pour appliquer ce schéma on a changé la détermination de la densité dans la fichier \\
+\lstinline$src\solver\ComputeForces.m$ :
+\begin{lstlisting}           
+    %CONTINUITY CONTRIBUTION
+    switch d
+        case{2}
+            sigma=sqrt(5/18)*h;
+            nu_rho=delta*sigma*c0;
+        case{3}
+            sigma=sqrt(4/15)*h;
+            nu_rho=delta*sigma*c0;
+    end
+    if DENSDIFFTYPE == COLAGROSSIDIFF
+        dRhodt = 
+            DivergenceContribMolteniColagrossi(m,dwdr,rVelCont,rPos,nu_rho,rho_i,rho_j);
+    else
+        dRhodt = DivergenceContrib(m,dwdr,rVelCont,rPos);
+    end
+\end{lstlisting} 
+
 \subsection{Énergie mécanique en fonction du temps}
 \begin{figure}[h]
 	\begin{minipage}[h]{0.49\linewidth}
@@ -131,9 +167,8 @@ Car $\ul{\nabla}w_{ij} \propto \ul{r}_{ij}$ et $V_j = \frac{m}{\rho_j}$ on obtie
 	& \lambda_{\min} = \min\lambda(\uul{R}_i^{-1}) = \min\{ -\frac{m}{2} (\mathrm{tr} A \pm \sqrt{\mathrm{tr}^2 - 4 \det A}) \} = -\frac{m}{2} (\mathrm{tr} A + \sqrt{\mathrm{tr}^2 - 4 \det A})
 \end{align*}
 
-Pour réaliser cette fonctionnalité on a implémenté des variables de type des particules et la fonction \lstinline$src\solver\particle_type$, qui retourne une liste de deux éléments : la valeur propre minimale et le type de la particule considérée.
+Pour réaliser cette fonctionnalité on a implémenté des variables de type des particules et la fonction \lstinline$src\solver\particle_type.m$, qui retourne une liste de deux éléments : la valeur propre minimale et le type de la particule considérée.
 % \\ \lstinline$LONELY_PARTICLE FREE_BOUNDARY_PARTICLE SURROUNDED_PARTICLE$
-\lstset{language=matlab}   
 \begin{lstlisting}           
 function particle_type = findParticleType(m,dwdr,rho_j,rPos)
     % R-1 = -m * A 
