@@ -245,7 +245,8 @@ while t<1.51 %10
     t1e = cputime;
     text = sprintf('Compute forces in :  %f s',t1e-t1s);
     disp(text);
-    % disp('SURF_ELEM!!!!');
+
+    %COMPUTE FREE SURFACE
     [lonely_particles free_boundary_particles lambda_list] = separateParticles(part,space);
 
     %INTEGRATION STEP STEP

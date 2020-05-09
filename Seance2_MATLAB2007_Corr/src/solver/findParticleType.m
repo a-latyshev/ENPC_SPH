@@ -11,8 +11,12 @@ function particle_type = findParticleType(m,dwdr,rho_j,rPos)
     a22 = sum (a22_ij);
     trA = a11 + a22;
     detA = a11 * a22 - a12 * a12;
-    lambda = -m * 0.5 * (trA + sqrt(trA * trA - 4 * detA));
-
+    if (trA * trA - 4 * detA) < 0
+        disp('ATTENTION! ROOTS ARE COMPLEXE!')
+    else
+        lambda = -m * 0.5 * (trA + sqrt(trA * trA - 4 * detA));
+    end 
+    
     if lambda <= 0.2 
         particle_type = [lambda LONELY_PARTICLE];
     elseif (lambda > 0.2) && (lambda <= 0.75 ) 

@@ -119,10 +119,11 @@ On trace la pression d'un point $z=0.2m$, qui se trouve au mur à droite sur la 
      
 \section{Détection de surface libre}
 
-\begin{equation}
+Dans cette partie on va réaliser la méthode de détection de surface libre par Doring (2005). On a la matrice de renormalisation :
+\begin{equation*}
 	\uul{R}_i^{-1} = - \sum_{j} V_j \ul{\nabla} w_{ij} \otimes \ul{r}_{ij}
-\end{equation}
-
+\end{equation*}
+Car $\ul{\nabla}w_{ij} \propto \ul{r}_{ij}$ et $V_j = \frac{m}{\rho_j}$ on obtient
 \begin{align*}
 	& \uul{R}_i^{-1} = - \sum_{j} \frac{m}{\rho_j} \ul{\nabla} w_{ij} \otimes \ul{r}_{ij} = - m \sum_{j} 
 	\frac{| \ul{\nabla} w_{ij} |}{\rho_j |\ul{r}_{ij} |} \ul{r}_{ij} \otimes \ul{r}_{ij} = -m A \implies A = A^T \\
@@ -130,11 +131,11 @@ On trace la pression d'un point $z=0.2m$, qui se trouve au mur à droite sur la 
 	& \lambda_{\min} = \min\lambda(\uul{R}_i^{-1}) = \min\{ -\frac{m}{2} (\mathrm{tr} A \pm \sqrt{\mathrm{tr}^2 - 4 \det A}) \} = -\frac{m}{2} (\mathrm{tr} A + \sqrt{\mathrm{tr}^2 - 4 \det A})
 \end{align*}
 
-Pour réaliser cette fonctionnalité on a implémenté des variables de type des particules et la fonction \lstinline$particle_type$, qui retourne une list de deux éléments : la valeur propre minimale et le type de la particule considérée.  
+Pour réaliser cette fonctionnalité on a implémenté des variables de type des particules et la fonction \lstinline$src\solver\particle_type$, qui retourne une liste de deux éléments : la valeur propre minimale et le type de la particule considérée.
 % \\ \lstinline$LONELY_PARTICLE FREE_BOUNDARY_PARTICLE SURROUNDED_PARTICLE$
 \lstset{language=matlab}   
 \begin{lstlisting}           
-	function particle_type = findParticleType(m,dwdr,rho_j,rPos)
+function particle_type = findParticleType(m,dwdr,rho_j,rPos)
     % R-1 = -m * A 
     global LONELY_PARTICLE FREE_BOUNDARY_PARTICLE SURROUNDED_PARTICLE;
 
@@ -147,7 +148,11 @@ Pour réaliser cette fonctionnalité on a implémenté des variables de type des
     a22 = sum (a22_ij);
     trA = a11 + a22;
     detA = a11 * a22 - a12 * a12;
-    lambda = -m * 0.5 * (trA + sqrt(trA * trA - 4 * detA));
+    if (trA * trA - 4 * detA) < 0
+        disp('ATTENTION! ROOTS ARE COMPLEXE!')
+    else
+        lambda = -m * 0.5 * (trA + sqrt(trA * trA - 4 * detA));
+    end 
 
     if lambda <= 0.2 
         particle_type = [lambda LONELY_PARTICLE];
@@ -155,7 +160,54 @@ Pour réaliser cette fonctionnalité on a implémenté des variables de type des
         particle_type = [lambda FREE_BOUNDARY_PARTICLE];
     else 
         particle_type = [lambda SURROUNDED_PARTICLE];
+end
+\end{lstlisting} 
+
+Pour déterminer tous les types des particules on a réalisé une fonction \lstinline$src\solver\separateParticles.m$, où il y a une boucle pour les particules \lstinline$FLUID$ de notre domaine. Cette fonction retourne trois listes : \lstinline$lambda_list$ contient toutes les valeurs propres minimales $\lambda_{\min}$, \lstinline$free_boundary_particles$ contient les indexes des particules appartenant à la surface libre et  \lstinline$lonely_particles$ contient les indexes des particules, qui appartiennent à un jet ou sont isolées.
+
+Pour appliquer la fonctionnalité réalisé dans le projet, on appel la fonction \lstinline$separateParticles$ dans le fichier principale \lstinline$main_Part4.m$ sur chaque itération du processus. 
+\begin{lstlisting}           
+    [lonely_particles free_boundary_particles lambda_list] 
+    = separateParticles(part,space);
+\end{lstlisting} 
+
+Pour s'assurer que l'algorithme détermine correctement la surface libre, on a changé un peu la fonction \lstinline$plotParticlesPressure$. Désormais, les carrées rouges indiquent la surface libre.  
+
+\begin{lstlisting}
+    % PLOT FREE BOUNDARY
+    N = size(free_boundary_particles);
+    for i = 1:N(2)
+        k = free_boundary_particles(1,i);
+        xtab = [part(k,POS(1))-dr/2 part(k,POS(1))+dr/2 
+            part(k,POS(1))+dr/2 part(k,POS(1))-dr/2]';
+        ytab = [part(k,POS(2))-dr/2 part(k,POS(2))-dr/2 
+            part(k,POS(2))+dr/2 part(k,POS(2))+dr/2]';
+        patch(xtab,ytab,'red');
     end
 \end{lstlisting} 
 
+
+\begin{figure}[H]
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000000}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000000}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000000}}
+    \end{minipage}
+    % \begin{minipage}[h]{1\linewidth}
+    % \begin{tabular}{p{0.32\linewidth}p{0.32\linewidth}p{0.32\linewidth}}
+    % \centering а) & \centering б) & \centering в) \\
+    % \end{tabular}
+    % \end{minipage}
+    % \vspace*{-1cm}
+    \caption{La démonstration de la surface libre pour les itérations différentes}
+    % \label{ris:correlationsignals}
+\end{figure}
+    
+Comme on voit l'algorithme fonctionne parfaitement!!!! A FINIR
 \end{document}
