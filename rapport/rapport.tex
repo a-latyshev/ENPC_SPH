@@ -71,6 +71,12 @@
 
 \newpage
 \section{Implémentation d'un schéma de diffusion de densité}
+Modèle de Molteni et Colagrossi: 
+\begin{align*}
+	\dot{\rho} &= -\rho_{a}D_{a}\{\text{v}_{b}\}+\nu_{\rho}L_{a}\{\rho_{b}\}\\
+	\nu_{\rho} &= \delta\sigma c_{0} 
+\end{align*}
+$\sigma=\sqrt{5/18}h$ si on prends noyau "Wendland $C^2$ ($d=2$)". $c_0$ est un constant déjà calculé. Ce que on doit ajouter dans le code est justement la terme laplacienne du $\rho$.
 
 Pour d'activer et de désactiver la diffusion de densité, On définit un variable "DENSDIFFTYPE" en égalant 1 ou 0 du ligne 83 à 86(nommé par " Density diffusion (PROJECT!!!)"). Et le paramètre $\delta$ est laissé libre à utilisateur du ligne 88(nommé par "diff Parameters").\par
   
@@ -115,7 +121,22 @@ Et puis, on remarque que l'augmentation de $\delta$ conduit à une perte plus pe
 	\end{center}
 	\caption{Pression interpolée à la position x=2m et z=0.2m}
 \end{figure}
+
 On trace la pression d'un point $z=0.2m$, qui se trouve au mur à droite sur la base du barrage. Quand $t=0.5~0.6$, la pression oscille brutalement et on voit une perte d'énergie évidente dans la Figure 2. 
+\begin{figure}[H]
+	\begin{minipage}[H]{0.49\linewidth}
+		\center{\includegraphics[width=1\linewidth]{img/numexpH_al01de02.png} }
+		{$\alpha=0.1$ $\delta$ varié}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[H]{0.49\linewidth}
+		\center{\includegraphics[width=1\linewidth]{img/numexpX_al01de02.png} }
+		{$\alpha$ varié $\delta=0.1$}
+	\end{minipage}
+	\caption{Résultats expérimentaux et numériques}
+\end{figure}
+
+On compare nos résultats numériques avec les résultats expérimentaux donnés en séance TD2. On mets les paramètres $\alpha=0.1$ et $\delta=0.2$.\\ 
      
 \section{Détection de surface libre}
 
