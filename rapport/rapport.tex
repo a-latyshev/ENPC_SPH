@@ -81,9 +81,7 @@ Modèle de Molteni et Colagrossi:
 \end{align*}
 $\sigma=\sqrt{5/18}h$ si on prends noyau "Wendland $C^2$ ($d=2$)". $c_0$ est un constant déjà calculé. Ce que on doit ajouter dans le code est justement la terme laplacienne du $\rho$.
 
-On a pris TD2 comme une base de notre projet. 
-
-Pour d'activer et de désactiver la diffusion de densité, On définit un variable "DENSDIFFTYPE" en égalant 1 ou 0 du ligne 83 à 86(nommé par " Density diffusion (PROJECT!!!)"). Et le paramètre $\delta$ est laissé libre à utilisateur du ligne 88(nommé par "diff Parameters").\par
+On a pris TD2 comme une base de notre projet. Pour d'activer et de désactiver la diffusion de densité, On définit un variable "DENSDIFFTYPE" en égalant 1 ou 0 du ligne 83 à 86(nommé par " Density diffusion (PROJECT!!!)"). Et le paramètre $\delta$ est laissé libre à utilisateur du ligne 88(nommé par "diff Parameters").\par
   
 \subsection{Impact sur le champs de pression}
 \begin{figure}[h]
@@ -204,11 +202,7 @@ function particle_type = findParticleType(m,dwdr,rho_j,rPos)
     a22 = sum (a22_ij);
     trA = a11 + a22;
     detA = a11 * a22 - a12 * a12;
-    if (trA * trA - 4 * detA) < 0
-        disp('ATTENTION! ROOTS ARE COMPLEXE!')
-    else
-        lambda = -m * 0.5 * (trA + sqrt(trA * trA - 4 * detA));
-    end 
+    lambda = -m * 0.5 * (trA + sqrt(trA * trA - 4 * detA));
 
     if lambda <= 0.2 
         particle_type = [lambda LONELY_PARTICLE];
@@ -249,21 +243,39 @@ Pour s'assurer que l'algorithme détermine correctement la surface libre, on a c
     \end{minipage}
     \hfill
     \begin{minipage}[h]{0.32\linewidth}
-        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000000}}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000020}}
     \end{minipage}
     \hfill
     \begin{minipage}[h]{0.32\linewidth}
-        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000000}}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000047}}
     \end{minipage}
-    % \begin{minipage}[h]{1\linewidth}
-    % \begin{tabular}{p{0.32\linewidth}p{0.32\linewidth}p{0.32\linewidth}}
-    % \centering а) & \centering б) & \centering в) \\
-    % \end{tabular}
-    % \end{minipage}
-    % \vspace*{-1cm}
+    \vfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000062}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000088}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000123}}
+    \end{minipage}
+    \vfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000173}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000218}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[h]{0.32\linewidth}
+        \center{\includegraphics[width=1\linewidth]{img/sl/fig_000236}}
+    \end{minipage}
     \caption{La démonstration de la surface libre pour les itérations différentes}
     % \label{ris:correlationsignals}
 \end{figure}
     
-Comme on voit l'algorithme fonctionne parfaitement!!!! A FINIR
+Comme on voit l'algorithme fonctionne très bien sauf des certaines itérations. "La pénétration" des éléments de la surface libre puisse être liée avec l'inexactitude des calculs numériques et avec le petite nombre des particules. Cette méthode est suffisant pour approximer la surface libre. 
 \end{document}
