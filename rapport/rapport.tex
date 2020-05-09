@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\newcommand\tens[1]{\underline{\underline{#1}}}
+\newcommand\ve[1]{\underline{#1}}
+\usepackage[utf8]{inputenc}     % for éô
+\usepackage[a4paper, left=0.8in, right=0.8in, top=1in, bottom=1in]{geometry}
+                                % for page size and margin settings
+\usepackage{graphicx}           % for ?
+\usepackage{float}
+\usepackage{subfigure} 
+\usepackage[squaren, Gray, cdot]{SIunits}
+\usepackage{xspace}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb}    % for better equations
+% \DeclareMathOperator{\commande}{texte}
+\usepackage{amsthm}             % for better theorem styles
+\usepackage{mathtools}          % for greek math symbol formatting
+\usepackage{enumitem}           % for control of 'enumerate' numbering
+\usepackage{listings}           % for control of 'itemize' spacing
+\usepackage{todonotes}          % for clear TODO notes
+\usepackage{newcent}            %pour la police
+\usepackage{hyperref}           % page numbers and '\ref's become clickable
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{titlepage}
+	\thispagestyle{empty}
+	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+	\center
+	\textsc{\large ECOLE NATIONALE DES PONTS ET CHAUSSEES}\\[.7cm]
+	\includegraphics[width=35mm]{img/ENPC_logo.png}\\[.5cm]
+	\textsc{\large Departement Génie Mécanique et Matériaux - 2019/2020}\\[0.5cm]
+	
+	\vspace{2cm}
+	
+	\HRule \\[0.4cm]
+	{\LARGE {\fontfamily{pag}\selectfont {SPH : Projet}}
+    \vspace{0.4cm}
+	\HRule \\[.5cm]
+
+\vspace{3cm}
+
+\large Réalisé par : 
+
+\vspace{0.5cm}
+
+{\fontfamily{pag}\selectfont{{\bfseries Andrey LATYSHEV} $\And$ {\bfseries Siyuan HE}}}
+\\
+\vspace{1cm}
+
+% Encadré par : \bfseries\fontfamily{pag}\selectfont{Daniel Weisz-Patrault}
+
+}
+\end{titlepage}
+
+% \newpage
+% \vspace*{\stretch{1}}
+% \begin{center}
+%     \tableofcontents
+% \end{center}
+% \vspace*{\stretch{1}}
+
+\newpage
+\section{Implémentation d'un schéma de difusion de densité}
+
+\section{Détection de surface libre}
+
+\end{document}

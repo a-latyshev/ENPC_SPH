@@ -28,6 +28,12 @@ global alpha eps;
 global c0 B gamma mu dt rhoMin rhoMax shepardMin;
 global g nBound;
 global vecPer;
+
+global LONELY_PARTICLE FREE_BOUNDARY_PARTICLE SURROUNDED_PARTICLE;
+global lambda_list; %list of minimal eigen numbers of renormalisation matrix 
+global free_boundary_particles; %list of indexes 
+global lonely_particles; %list of indexes 
+
 %Fluid information
 g=[0 -9.81];
 rhoF=1000;
@@ -52,6 +58,13 @@ smthfc=1.5;
 aW = 7/(4*pi);
 d = 2;
 
+%
+LONELY_PARTICLE = 1;
+FREE_BOUNDARY_PARTICLE = 2;
+SURROUNDED_PARTICLE = 3;
+lambda_list = [];
+free_boundary_particles = [];
+lonely_particles = [];
 
 % Visc models
 %VISCOUS MODEL
@@ -119,6 +132,7 @@ xOrigin= -nBound*dr;
 yOrigin=-nBound*dr;
 
 part=[];
+
 %% 4-a) Construct the domain
 % COMPLETE HERE
 % To add a block of particles use the command
@@ -152,7 +166,7 @@ plotParticlesPressure(part,'Pressure',0,rhoF*norm(g)*ly*pLaplaceNoDim(lx,ly,10,0
 xlim([xOrigin-xSize*.05,xOrigin+xSize*1.05])
 ylim([yOrigin-ySize*.05,yOrigin+ySize*1.05])
 
-%%pour trouver la nombre du point interpolé au mur à la position x = 2 m et z = 0.2 m
+%%pour trouver la nombre du point interpolï¿½ au mur ï¿½ la position x = 2 m et z = 0.2 m
 [observe_point,~]=find(abs(part(:,POS(1))-2.0)<=dr/2);
 [observe_point_0,~]=find(abs(part(observe_point,POS(2))-0.2)<=dr/2);
 observe_point=observe_point(observe_point_0);
@@ -231,7 +245,11 @@ while t<1.51 %10
     t1e = cputime;
     text = sprintf('Compute forces in :  %f s',t1e-t1s);
     disp(text);
+    disp('SURF_ELEM!!!!');
+    [lonely_particles free_boundary_particles lambda_list] = separateParticles(part,space);
+    disp(size(free_boundary_particles));
     
+
     %INTEGRATION STEP STEP
     part = integrationStep(part,dt);
     text = sprintf('Integration: update velo, pos then rho');
