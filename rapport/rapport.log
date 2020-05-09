@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.4.25)  9 MAY 2020 15:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.4.25)  9 MAY 2020 13:24
 entering extended mode
 **./rapport.tex
 (rapport.tex
@@ -704,24 +704,24 @@ File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
 ) (rapport.aux)
 \openout1 = `rapport.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Trying to load font information for OT1+pnc on input line 3
-4.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Trying to load font information for OT1+pnc on input line 2
+7.
 
 (F:\MikTex\tex/latex/psnfss\ot1pnc.fd
 File: ot1pnc.fd 2001/06/04 font definitions for OT1/pnc.
@@ -787,7 +787,7 @@ Option `Gray' provided!
 \c@lstlisting=\count316
 ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box68
-Package hyperref Info: Link coloring OFF on input line 34.
+Package hyperref Info: Link coloring OFF on input line 27.
  (F:\MikTex\tex/latex/hyperref\nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
 (F:\MikTex\tex/latex/refcount\refcount.sty
@@ -798,9 +798,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count317
 )
-LaTeX Info: Redefining \ref on input line 34.
-LaTeX Info: Redefining \pageref on input line 34.
-LaTeX Info: Redefining \nameref on input line 34.
+LaTeX Info: Redefining \ref on input line 27.
+LaTeX Info: Redefining \pageref on input line 27.
+LaTeX Info: Redefining \nameref on input line 27.
  (rapport.out)
 (rapport.out)
 \@outlinefile=\write4
@@ -809,22 +809,22 @@ LaTeX Info: Redefining \nameref on input line 34.
 <img/ENPC_logo.png, id=50, 1204.5pt x 1368.11125pt>
 File: img/ENPC_logo.png Graphic file (type png)
 <use img/ENPC_logo.png>
-Package pdftex.def Info: img/ENPC_logo.png  used on input line 40.
+Package pdftex.def Info: img/ENPC_logo.png  used on input line 33.
 (pdftex.def)             Requested size: 99.58464pt x 113.10437pt.
-LaTeX Font Info:    Trying to load font information for OT1+pag on input line 4
-6.
+LaTeX Font Info:    Trying to load font information for OT1+pag on input line 3
+9.
  (F:\MikTex\tex/latex/psnfss\ot1pag.fd
 File: ot1pag.fd 2001/06/04 font definitions for OT1/pag.
 )
 LaTeX Font Info:    Font shape `OT1/pag/b/n' in size <12> not available
-(Font)              Font shape `OT1/pag/db/n' tried instead on input line 56.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 56.
+(Font)              Font shape `OT1/pag/db/n' tried instead on input line 49.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 49.
 
 
 (F:\MikTex\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 56.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 49.
 
  (F:\MikTex\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -836,109 +836,68 @@ logo.png>]
 <img/alpha01delta00t082.png, id=62, 421.575pt x 316.0608pt>
 File: img/alpha01delta00t082.png Graphic file (type png)
 <use img/alpha01delta00t082.png>
-Package pdftex.def Info: img/alpha01delta00t082.png  used on input line 86.
+Package pdftex.def Info: img/alpha01delta00t082.png  used on input line 73.
 (pdftex.def)             Requested size: 236.12161pt x 177.0266pt.
 <img/alpha01delta02t082.png, id=63, 421.575pt x 316.0608pt>
 File: img/alpha01delta02t082.png Graphic file (type png)
 <use img/alpha01delta02t082.png>
-Package pdftex.def Info: img/alpha01delta02t082.png  used on input line 91.
+Package pdftex.def Info: img/alpha01delta02t082.png  used on input line 78.
 (pdftex.def)             Requested size: 236.12161pt x 177.0266pt.
 <img/em_al01.png, id=64, 428.02162pt x 321.8834pt>
 File: img/em_al01.png Graphic file (type png)
 <use img/em_al01.png>
-Package pdftex.def Info: img/em_al01.png  used on input line 100.
+Package pdftex.def Info: img/em_al01.png  used on input line 87.
 (pdftex.def)             Requested size: 236.12161pt x 177.56686pt.
 <img/em_de01.png, id=65, 428.02162pt x 321.8834pt>
 File: img/em_de01.png Graphic file (type png)
 <use img/em_de01.png>
-Package pdftex.def Info: img/em_de01.png  used on input line 105.
+Package pdftex.def Info: img/em_de01.png  used on input line 92.
 (pdftex.def)             Requested size: 236.12161pt x 177.56686pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Overfull \hbox (12.46672pt too wide) in paragraph at lines 115--116
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.101 
+       [1 <./img/alpha01delta00t082.png (PNG copy)> <./img/alpha01delta02t082.p
+ng (PNG copy)> <./img/em_al01.png> <./img/em_de01.png>]
+Overfull \hbox (12.46672pt too wide) in paragraph at lines 102--103
 []\OT1/pnc/m/n/10 Et puis, on re-mar-que que l'augmentation de $\OML/cmm/m/it/1
 0 $ \OT1/pnc/m/n/10 con-duit []a une perte plus pe-tite, au con-traire l'augme
 ntation
  []
 
-<img/VariationPression.jpg, id=66, 438.9198pt x 319.4334pt>
+<img/VariationPression.jpg, id=77, 438.9198pt x 319.4334pt>
 File: img/VariationPression.jpg Graphic file (type jpg)
 <use img/VariationPression.jpg>
-Package pdftex.def Info: img/VariationPression.jpg  used on input line 120.
+Package pdftex.def Info: img/VariationPression.jpg  used on input line 107.
 (pdftex.def)             Requested size: 284.52756pt x 207.07358pt.
-pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
-been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.124 
-       [1 <./img/alpha01delta00t082.png (PNG copy)> <./img/alpha01delta02t082.p
-ng (PNG copy)>]
-<img/numexpH_al01de02.png, id=78, 632.3625pt x 474.27188pt>
-File: img/numexpH_al01de02.png Graphic file (type png)
-<use img/numexpH_al01de02.png>
-Package pdftex.def Info: img/numexpH_al01de02.png  used on input line 128.
-(pdftex.def)             Requested size: 236.12161pt x 177.08441pt.
-<img/numexpX_al01de02.png, id=79, 632.3625pt x 474.27188pt>
-File: img/numexpX_al01de02.png Graphic file (type png)
-<use img/numexpX_al01de02.png>
-Package pdftex.def Info: img/numexpX_al01de02.png  used on input line 133.
-(pdftex.def)             Requested size: 236.12161pt x 177.08441pt.
- [2 <./img/em_al01.png> <./img/em_de01.png> <./img/VariationPression.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 139--140
-
- []
-
-(F:\MikTex\tex/latex/listings\lstlang1.sty
-File: lstlang1.sty 2020/03/24 1.8d listings language file
-)
-LaTeX Font Info:    Trying to load font information for TS1+pnc on input line 1
-59.
-
-(F:\MikTex\tex/latex/psnfss\ts1pnc.fd
-File: ts1pnc.fd 2001/06/04 font definitions for TS1/pnc.
-)
-LaTeX Font Info:    Trying to load font information for OML+pnc on input line 1
-73.
- (F:\MikTex\tex/latex/psnfss\omlpnc.fd
-File: omlpnc.fd 
-)
-LaTeX Font Info:    Font shape `OML/pnc/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 173.
-
-[3 <./img/numexpH_al01de02.png (PNG copy)> <./img/numexpX_al01de02.png (PNG cop
-y)>] [4]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 182.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 182.
+[2 <./img/VariationPression.jpg>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 115.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 115.
  (rapport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 182.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 182.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 115.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 115.
 Package rerunfilecheck Info: File `rapport.out' has not changed.
 (rerunfilecheck)             Checksum: 381C0627E670C3EC09FD347FF4A185D4;435.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 182.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 115.
  ) 
 Here is how much of TeX's memory you used:
- 21760 strings out of 480930
- 381818 string characters out of 2917967
- 838063 words of memory out of 3000000
- 37126 multiletter control sequences out of 15000+200000
- 557190 words of font info for 82 fonts, out of 3000000 for 9000
+ 20802 strings out of 480930
+ 371576 string characters out of 2917967
+ 633732 words of memory out of 3000000
+ 36212 multiletter control sequences out of 15000+200000
+ 552894 words of font info for 74 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 68i,10n,83p,467b,2308s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 68i,8n,83p,467b,395s stack positions out of 5000i,500n,10000p,200000b,50000s
 {F:/MikTex/fonts/enc/dvips/base/8r.enc}<F:/MikTex/fonts/type1/public/amsfonts
-/cm/cmex10.pfb><F:/MikTex/fonts/type1/public/amsfonts/cm/cmmi10.pfb><F:/MikTex/
-fonts/type1/public/amsfonts/cm/cmmi7.pfb><F:/MikTex/fonts/type1/public/amsfonts
-/cm/cmr10.pfb><F:/MikTex/fonts/type1/public/amsfonts/cm/cmr12.pfb><F:/MikTex/fo
-nts/type1/public/amsfonts/cm/cmr7.pfb><F:/MikTex/fonts/type1/public/amsfonts/cm
-/cmsy10.pfb><F:/MikTex/fonts/type1/public/amsfonts/cm/cmsy7.pfb><F:/MikTex/font
-s/type1/urw/avantgar/uagd8a.pfb><F:/MikTex/fonts/type1/urw/avantgar/uagk8a.pfb>
-<F:/MikTex/fonts/type1/urw/ncntrsbk/uncb8a.pfb><F:/MikTex/fonts/type1/urw/ncntr
-sbk/uncr8a.pfb><F:/MikTex/fonts/type1/urw/ncntrsbk/uncri8a.pfb>
-Output written on rapport.pdf (5 pages, 514440 bytes).
+/cm/cmmi10.pfb><F:/MikTex/fonts/type1/public/amsfonts/cm/cmmi7.pfb><F:/MikTex/f
+onts/type1/public/amsfonts/cm/cmr10.pfb><F:/MikTex/fonts/type1/public/amsfonts/
+cm/cmr12.pfb><F:/MikTex/fonts/type1/urw/avantgar/uagd8a.pfb><F:/MikTex/fonts/ty
+pe1/urw/avantgar/uagk8a.pfb><F:/MikTex/fonts/type1/urw/ncntrsbk/uncb8a.pfb><F:/
+MikTex/fonts/type1/urw/ncntrsbk/uncr8a.pfb>
+Output written on rapport.pdf (3 pages, 391293 bytes).
 PDF statistics:
- 176 PDF objects out of 1000 (max. 8388607)
- 38 named destinations out of 1000 (max. 500000)
- 189 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 114 PDF objects out of 1000 (max. 8388607)
+ 11 named destinations out of 1000 (max. 500000)
+ 179 words of extra memory for PDF output out of 10000 (max. 10000000)
 
