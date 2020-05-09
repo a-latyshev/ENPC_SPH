@@ -24,6 +24,13 @@
 \usepackage{hyperref}           % page numbers and '\ref's become clickable
 %%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\ul[1]{\underline{#1}}
+\newcommand\uul[1]{\underline{\underline{#1}}}
+\newcommand\uex{\ul{e}_x}
+\newcommand\uey{\ul{e}_y}
+%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{document}
 \begin{titlepage}
 	\thispagestyle{empty}
@@ -66,5 +73,44 @@
 \section{Implémentation d'un schéma de difusion de densité}
 
 \section{Détection de surface libre}
+
+\begin{equation}
+	\uul{R}_i^{-1} = - \sum_{j} V_j \ul{\nabla} w_{ij} \otimes \ul{r}_{ij}
+\end{equation}
+
+\begin{align*}
+	& \uul{R}_i^{-1} = - \sum_{j} \frac{m}{\rho_j} \ul{\nabla} w_{ij} \otimes \ul{r}_{ij} = - m \sum_{j} 
+	\frac{| \ul{\nabla} w_{ij} |}{\rho_j |\ul{r}_{ij} |} \ul{r}_{ij} \otimes \ul{r}_{ij} = -m A \implies A = A^T \\
+	& A = \sum_j \frac{| \ul{\nabla} w_{ij} |}{\rho_j |\ul{r}_{ij} |} \left[ (r_{ij}^x)^2 \uex \otimes \uex + (r_{ij}^y)^2 \uey \otimes \uey + (r_{ij}^x r_{ij}^y)^2 (\uex \otimes \uey + \uey \otimes \uex) \right] \\ 
+	& \lambda_{\min} = \min\lambda(\uul{R}_i^{-1}) = \min\{ -\frac{m}{2} (\mathrm{tr} A \pm \sqrt{\mathrm{tr}^2 - 4 \det A}) \} = -\frac{m}{2} (\mathrm{tr} A + \sqrt{\mathrm{tr}^2 - 4 \det A})
+\end{align*}
+
+Pour réaliser cette fonctionnalité on a implémenté des variables de type des particules et la fonction \lstinline$particle_type$, qui retourne une list de deux éléments : la valeur propre minimale et le type de la particule considérée.  
+% \\ \lstinline$LONELY_PARTICLE FREE_BOUNDARY_PARTICLE SURROUNDED_PARTICLE$
+\lstset{language=matlab}   
+\begin{lstlisting}           
+	function particle_type = findParticleType(m,dwdr,rho_j,rPos)
+    % R-1 = -m * A 
+    global LONELY_PARTICLE FREE_BOUNDARY_PARTICLE SURROUNDED_PARTICLE;
+
+    rNorm = sqrt(rPos(:,1).*rPos(:,1)+rPos(:,2).*rPos(:,2)); 
+    a11_ij = dwdr.*rPos(:,1).*rPos(:,1)./(rho_j.*rNorm); 
+    a12_ij = dwdr.*rPos(:,1).*rPos(:,2)./(rho_j.*rNorm); 
+    a22_ij = dwdr.*rPos(:,2).*rPos(:,2)./(rho_j.*rNorm); 
+    a11 = sum (a11_ij);
+    a12 = sum (a12_ij);
+    a22 = sum (a22_ij);
+    trA = a11 + a22;
+    detA = a11 * a22 - a12 * a12;
+    lambda = -m * 0.5 * (trA + sqrt(trA * trA - 4 * detA));
+
+    if lambda <= 0.2 
+        particle_type = [lambda LONELY_PARTICLE];
+    elseif (lambda > 0.2) && (lambda <= 0.75 ) 
+        particle_type = [lambda FREE_BOUNDARY_PARTICLE];
+    else 
+        particle_type = [lambda SURROUNDED_PARTICLE];
+    end
+\end{lstlisting} 
 
 \end{document}
