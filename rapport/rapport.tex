@@ -70,8 +70,53 @@
 % \vspace*{\stretch{1}}
 
 \newpage
-\section{Implémentation d'un schéma de difusion de densité}
+\section{Implémentation d'un schéma de diffusion de densité}
 
+Pour d'activer et de désactiver la diffusion de densité, On définit un variable "DENSDIFFTYPE" en égalant 1 ou 0 du ligne 83 à 86(nommé par " Density diffusion (PROJECT!!!)"). Et le paramètre $\delta$ est laissé libre à utilisateur du ligne 88(nommé par "diff Parameters").\par
+  
+\subsection{Impact sur le champs de pression}
+\begin{figure}[h]
+	\begin{minipage}[h]{0.49\linewidth}
+		\center{\includegraphics[width=1\linewidth]{img/alpha01delta00t082.png} }
+		{$\alpha=0.1$ $\delta=0.0$}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[h]{0.49\linewidth}
+		\center{\includegraphics[width=1\linewidth]{img/alpha01delta02t082.png} }
+		{$\alpha=0.1$ $\delta=0.2$}
+	\end{minipage}
+	\caption{Champ de pression comparé à un instant avec et sans diffusion de densité.}
+\end{figure}
+On voit facilement le champs de pression varie d'une manière "glissante" par rapport à gauche où on désactive la diffusion de densité. Ce schéma nous permets de simuler un processus dans lequel l'impact de la pression à la densité n'est pas négligeable. Celui-ci évite évidemment la divergence de l'itération dans calculs.
+\subsection{Énergie mécanique en fonction du temps}
+\begin{figure}[h]
+	\begin{minipage}[h]{0.49\linewidth}
+		\center{\includegraphics[width=1\linewidth]{img/em_al01.png} }
+		{$\alpha=0.1$ $\delta$ varié}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[h]{0.49\linewidth}
+		\center{\includegraphics[width=1\linewidth]{img/em_de01.png} }
+		{$\alpha$ varié $\delta=0.1$}
+	\end{minipage}
+	\caption{Énergie mécanique en fonction du temps}
+\end{figure}
+
+Dans cette partie-là, on ajoute une variable "$EnergyMeca$" dans le module "$INTEGRATION STEP$". Dans le module "$save the mecanic energy$",on enregistre l'énergie mécanique de cette système à certaine instant contrôlé par le variable "$t_em$" mis devant le début de l'itération. Pour mieux visualiser la variation de l'énergie mécanique, on calcule le taux de la perte d'énergie mécanique par rapport à l'état initial.
+
+Premièrement la différence entre la courbe gauche et la courbe droite démontre le changement de $\delta$ ayant une perturbation faible sur la perte d'énergie. De l'image à droite, on vérifie d'abord que la limite inférieur de $\alpha$ égale $0.03$. Si on le diminue encore, l'itération va diverger ultérieurement. Cette conclusion coïncide avec l'énoncé du projet.
+
+Et puis, on remarque que l'augmentation de $\delta$ conduit à une perte plus petite, au contraire l'augmentation de $\alpha$ conduit à une perte plus grande. Cette phénomène nous inspire que la viscosité artificielle rend l'itération robuste avec un coût de la perte d'énergie. Mais la diffusion de densité ne change pas beaucoup l'énergie mécanique totale. 
+          
+\subsection{Pression interpolée à la position x=2m et z=0.2m}
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=10cm]{img/VariationPression.jpg}
+	\end{center}
+	\caption{Pression interpolée à la position x=2m et z=0.2m}
+\end{figure}
+On trace la pression d'un point $z=0.2m$, qui se trouve au mur à droite sur la base du barrage. Quand $t=0.5~0.6$, la pression oscille brutalement et on voit une perte d'énergie évidente dans la Figure 2. 
+     
 \section{Détection de surface libre}
 
 \begin{equation}
