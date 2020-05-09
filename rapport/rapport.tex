@@ -92,13 +92,13 @@ Car $\ul{\nabla}w_{ab} \propto \ul{r}_{ab}$ et $V_b = \frac{m}{\rho_b}$ on obtie
 On a pris TD2 comme une base de notre projet. Pour d'activer et de désactiver la diffusion de densité, On définit un variable "DENSDIFFTYPE" en égalant 1 ou 0 du ligne 83 à 86 (nommé par " Density diffusion (PROJECT!!!)"). Et le paramètre $\delta$ est laissé libre à utilisateur du ligne 88 (nommé par "diff Parameters").\par
   
 \subsection{Impact sur le champs de pression}
-\begin{figure}[h]
-	\begin{minipage}[h]{0.49\linewidth}
+\begin{figure}[H]
+	\begin{minipage}[H]{0.49\linewidth}
 		\center{\includegraphics[width=1\linewidth]{img/alpha01delta00t082.png} }
 		{$\alpha=0.1$ $\delta=0.0$}
 	\end{minipage}
 	\hfill
-	\begin{minipage}[h]{0.49\linewidth}
+	\begin{minipage}[H]{0.49\linewidth}
 		\center{\includegraphics[width=1\linewidth]{img/alpha01delta02t082.png} }
 		{$\alpha=0.1$ $\delta=0.2$}
 	\end{minipage}
@@ -137,13 +137,13 @@ Pour appliquer ce schéma on a changé la détermination de la densité dans la 
 \end{lstlisting} 
 
 \subsection{Énergie mécanique en fonction du temps}
-\begin{figure}[h]
-	\begin{minipage}[h]{0.49\linewidth}
+\begin{figure}[H]
+	\begin{minipage}[H]{0.49\linewidth}
 		\center{\includegraphics[width=1\linewidth]{img/em_al01.png} }
 		{$\alpha=0.1$ $\delta$ varié}
 	\end{minipage}
 	\hfill
-	\begin{minipage}[h]{0.49\linewidth}
+	\begin{minipage}[H]{0.49\linewidth}
 		\center{\includegraphics[width=1\linewidth]{img/em_de01.png} }
 		{$\alpha$ varié $\delta=0.1$}
 	\end{minipage}
@@ -157,13 +157,20 @@ Premièrement la différence entre la courbe gauche et la courbe droite démontr
 Et puis, on remarque que l'augmentation de $\delta$ conduit à une perte plus petite, au contraire l'augmentation de $\alpha$ conduit à une perte plus grande. Cette phénomène nous inspire que la viscosité artificielle rend l'itération robuste avec un coût de la perte d'énergie. Mais la diffusion de densité ne change pas beaucoup l'énergie mécanique totale. 
           
 \subsection{Pression interpolée à la position x=2m et z=0.2m}
+Pour trace la pression d'un certain point, il faut trouver le nombre de ce point. On utilise la fonction "find" pour fournir la critère "x==2m" et "z==0.2m". 
+\begin{lstlisting}
+	[observe_point,~]=find(abs(part(:,POS(1))-2.0)<=dr/2);%x==2.0m
+	[observe_point_0,~]=find(abs(part(observe_point,POS(2))-0.2)<=dr/2);%z==0.2m
+	observe_point=observe_point(observe_point_0);
+\end{lstlisting}
+la phrase "abs(part(:,POS(1))-2.0)<=dr/2" nous permet de trouver le point qui se trouve plus proche de (2,0.2). "dr" est le rayon du noyau. Une fois on le trouve, on peut chercher la pression interpolé en utilisant la variable "part". 
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[width=10cm]{img/VariationPression.jpg}
 	\end{center}
 	\caption{Pression interpolée à la position x=2m et z=0.2m}
 \end{figure}
-
+   
 On trace la pression d'un point $z=0.2m$, qui se trouve au mur à droite sur la base du barrage. Quand $t=0.5~0.6$, la pression oscille brutalement et on voit une perte d'énergie évidente dans la Figure 2. 
 \begin{figure}[H]
 	\begin{minipage}[H]{0.49\linewidth}
